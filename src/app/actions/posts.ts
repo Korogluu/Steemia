@@ -63,7 +63,7 @@ export const FETCH_RANDOM_DOG_ERROR = "FETCH_RANDOM_DOG_ERROR";
  */
 export class fetchFeed implements Action {
     readonly type = FETCH_FEED;
-    constructor(public payload?: any) {}
+    constructor(public payload: any) {}
 }
 
 export class fetchFeedSuccess implements Action {
@@ -328,49 +328,11 @@ export class fetchByCashoutError implements Action {
     }
 }
 
-
-
-
-///////////////////////////////////////////////////////
-
-export class fetchRandomDog implements Action {
-    readonly type = FETCH_RANDOM_DOG;
-    constructor(public payload?: any) { }
-}
-
-/*
- * By convention, the payload property contains every parameter sent with actions
- */
-export class fetchRandomDogSuccess implements Action {
-
-    // We define the payload property
-    payload: { dogImgUrl: string };
-
-    readonly type = FETCH_RANDOM_DOG_SUCCESS;
-    constructor(dogImgUrl: string) {
-        //  We take a dog image url as parameter and put it in the payload
-        this.payload = { dogImgUrl };
-    }
-}
-
-export class fetchRandomDogError implements Action {
-
-    payload: { error: any }
-    
-    readonly type = FETCH_RANDOM_DOG_ERROR;
-    constructor(error: any) {
-        this.payload = { error }
-    }
-}
-
 /* 
  * Type Action contains every possible action of an action file
  * This will be useful with typechecking later on ( in reducers ). 
  */
 export type Action = 
-    fetchRandomDog | 
-    fetchRandomDogError | 
-    fetchRandomDogSuccess |
     fetchFeed |
     fetchFeedError | 
     fetchFeedSuccess |

@@ -1,5 +1,7 @@
 // Import Actions types from actions/dogs
-import * as fromDogsActions from '../actions/posts'
+import * as fromPostsActions from '../actions/posts'
+
+const OTHER_DOG_URL = "https://dog.ceo/api/img/retriever-golden/n02099601_3869.jpg";
 
 /*
  *  Defining our state datatype
@@ -7,8 +9,8 @@ import * as fromDogsActions from '../actions/posts'
  */
 export interface State {
     isLoading: boolean,
-    currentDog: {
-        imgUrl: string
+    posts: {
+        data: any
     }
 }
 
@@ -18,9 +20,10 @@ export interface State {
  */
 export const initialState: State = {
     isLoading: false,
-    currentDog: {
-        imgUrl: "https://dog.ceo/api/img/pembroke/n02113023_3945.jpg"
+    posts: {
+        data: "https://dog.ceo/api/img/pembroke/n02113023_3945.jpg"
     }
+
 }
 
 /*
@@ -31,47 +34,39 @@ export const initialState: State = {
  * Notice : The reducer should be immutable. ( We should never do "state.prop = ..." ).
  * Instead we creating and returning a new state each time
  */
-export function reducer(state: State = initialState, action: fromDogsActions.Action) {
+export function reducer(state: State = initialState, action: fromPostsActions.Action) {
 
     /*
      * Every action has an action.type property
      */ 
     switch (action.type) {
 
-        case fromDogsActions.FETCH_RANDOM_DOG: {
-            // As stated above we're creating a new state
-            // We're putting the new URL in the imgUrl props
+        /**
+         * FETCH FEED
+         */
+        case fromPostsActions.FETCH_FEED: {
             return {
-                // ...state : copy every properties from state into the new object
-                // We have to do this because the state is Immutable.
                 ...state,
-                // Request is beeing processed
                 isLoading: true
             }
         }
 
-        case fromDogsActions.FETCH_RANDOM_DOG_SUCCESS: {
-            // We get the dogImgUrl from the action payload
-            // Then we update the state with the new dog image url
-            const dogImgUrl = action.payload.dogImgUrl;
-
+        case fromPostsActions.FETCH_FEED_SUCCESS: {
+            const posts = action.payload.posts
             return {
-                currentDog: {
-                    imgUrl: dogImgUrl
+                posts: {
+                    data: posts
                 },
-                // Request is done, there is no more loading
                 isLoading: false
             }
         }
 
-        case fromDogsActions.FETCH_RANDOM_DOG_ERROR: {
+        case fromPostsActions.FETCH_FEED_ERROR: {
             return {
                 ...state,
-                // Request is done, there is no more loading                
                 isLoading: false
             }
         }
-
         /*
          * By default, if we don't recognize the action
          * the next state is the same as the current state

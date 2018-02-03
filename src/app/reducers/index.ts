@@ -11,7 +11,7 @@ import {
    * The State interface defines every data needed for our app to work
    */
   export interface State {  
-      dogs: fromPostsReducer.State
+      posts: fromPostsReducer.State
   }
   
   /**
@@ -19,7 +19,7 @@ import {
    * Each reducers is responsible for one part of the overall state
    */
   export const reducers: ActionReducerMap<State> = {
-      dogs: fromPostsReducer.reducer
+        posts: fromPostsReducer.reducer
   };
   
   // console.log all actions using storelogger

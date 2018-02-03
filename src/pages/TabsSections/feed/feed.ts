@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs/Observable";
-import * as fromDogsActions from '../../../app/actions/posts';
+import * as fromPostsActions from '../../../app/actions/posts';
 import { State } from '../../../app/reducers';
 
 @IonicPage()
@@ -33,7 +33,7 @@ export class FeedPage implements OnInit, OnDestroy {
    */
   onFindAnotherDogClicked() {
     // Dispatch the "findAnotherDog" action using the _store injected in the constructor
-    this._store.dispatch(new fromDogsActions.fetchRandomDog())
+    this._store.dispatch(new fromPostsActions.fetchFeed({test:"test"}))
   }
 
 
