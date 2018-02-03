@@ -13,7 +13,7 @@ import {
 import { fetchFeed } from '../actions/posts'
 
 @Injectable()
-export class DogsEffects {
+export class PostEffects {
     // Inject required services
     limit: number = 0;
     constructor(private actions$: Actions, private _dogApiService: SteemProvider) { }
@@ -30,7 +30,7 @@ export class DogsEffects {
         .switchMap((action) => {
             this.limit += 10;
             return this._dogApiService.getFeed({tag: action.tag, limit: action.limit})
-                // Request succeeed, we dispatch fetchRandomDogSuccess action with the retrieved imgUrl
+                // Request succeeed, we dispatch fetchFeedSuccess action with the retrieved imgUrl
                 .map(imgUrl => new fetchFeedSuccess(imgUrl))
                 // Something went wrong with the request
                 .catch(err => Observable.of(new fetchFeedError(err)))

@@ -20,7 +20,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { AuthProvider } from '../providers/auth/auth';
-import { DogsEffects } from './effects/posts';
+import { PostEffects } from './effects/posts';
 
 import { reducers, metaReducers } from './reducers';
 
@@ -41,7 +41,7 @@ import { reducers, metaReducers } from './reducers';
     }),
     IonicStorageModule.forRoot(),
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([DogsEffects]),
+    EffectsModule.forRoot([PostEffects]),
     StoreDevtoolsModule.instrument()
   ],
   bootstrap: [IonicApp],
