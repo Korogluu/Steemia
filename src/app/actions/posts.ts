@@ -268,6 +268,66 @@ export class fetchByPayoutError implements Action {
     }
 }
 
+/**
+ * Fetch By Active
+ */
+export class fetchByActive implements Action {
+    readonly type = FETCH_BY_ACTIVE;
+    constructor(public payload?: any) {}
+}
+
+export class fetchByActiveSuccess implements Action {
+
+    // Payload property
+    payload: { posts: Array<any> };
+
+    readonly type = FETCH_BY_ACTIVE_SUCCESS
+    constructor(posts: Array<any>) {
+        // Take the posts array as a parameter and put it into the payload
+        this.payload = { posts };
+    }
+}
+
+export class fetchByActiveError implements Action {
+
+    payload: { error: any }
+    
+    readonly type = FETCH_BY_ACTIVE_ERROR;
+    constructor(error: any) {
+        this.payload = { error }
+    }
+}
+
+/**
+ * Fetch By Cashout
+ */
+export class fetchByCashout implements Action {
+    readonly type = FETCH_BY_ACTIVE;
+    constructor(public payload?: any) {}
+}
+
+export class fetchByCashoutSuccess implements Action {
+
+    // Payload property
+    payload: { posts: Array<any> };
+
+    readonly type = FETCH_BY_CASHOUT_SUCCESS
+    constructor(posts: Array<any>) {
+        // Take the posts array as a parameter and put it into the payload
+        this.payload = { posts };
+    }
+}
+
+export class fetchByCashoutError implements Action {
+
+    payload: { error: any }
+    
+    readonly type = FETCH_BY_CASHOUT_ERROR;
+    constructor(error: any) {
+        this.payload = { error }
+    }
+}
+
 
 
 
@@ -307,4 +367,31 @@ export class fetchRandomDogError implements Action {
  * Type Action contains every possible action of an action file
  * This will be useful with typechecking later on ( in reducers ). 
  */
-export type Action = fetchRandomDog | fetchRandomDogError | fetchRandomDogSuccess;
+export type Action = 
+    fetchRandomDog | 
+    fetchRandomDogError | 
+    fetchRandomDogSuccess |
+    fetchFeed |
+    fetchFeedError | 
+    fetchFeedSuccess |
+    fetchTrending |
+    fetchTrendingError |
+    fetchTrendingSuccess |
+    fetchHot |
+    fetchHotError |
+    fetchHotSuccess |
+    fetchCreated | 
+    fetchCreatedError |
+    fetchCreatedSuccess |
+    fetchPromoted |
+    fetchPromotedError |
+    fetchPromotedSuccess |
+    fetchByVotes |
+    fetchByVotesError |
+    fetchByVotesSuccess |
+    fetchByPayout |
+    fetchByPayoutError |
+    fetchByPayoutSuccess |
+    fetchByActive |
+    fetchByActiveError |
+    fetchByActiveSuccess;
