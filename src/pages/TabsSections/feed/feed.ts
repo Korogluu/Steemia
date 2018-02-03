@@ -4,7 +4,10 @@ import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
-import { Observable } from 'rxjs/Observable';
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs/Observable";
+import * as fromDogsActions from '../../../app/actions/posts';
+import { State } from '../../../app/reducers';
 
 @IonicPage()
 @Component({
@@ -17,11 +20,22 @@ export class FeedPage implements OnInit, OnDestroy {
   private contents: Array<Post> = [];
   private perPage = 10;
   private result: any;
-
   constructor(private steemProvider: SteemProvider,
-              private appCtrl: App) {
+              private appCtrl: App,
+              private _store: Store<State>) {
+
+    
 
   }
+
+  /*
+   * Callback function called when the button is clicked
+   */
+  onFindAnotherDogClicked() {
+    // Dispatch the "findAnotherDog" action using the _store injected in the constructor
+    this._store.dispatch(new fromDogsActions.fetchRandomDog())
+  }
+
 
   public ngOnInit() {
     this.getFeed()

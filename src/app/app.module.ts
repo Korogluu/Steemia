@@ -15,6 +15,15 @@ import { MaterialMenuComponent } from '../components/material-menu/material-menu
 import { SteemProvider } from 'providers/steem/steem';
 import { HttpClientModule } from '@angular/common/http';
 
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+
+import { AuthProvider } from '../providers/auth/auth';
+import { DogsEffects } from './effects/posts';
+
+import { reducers, metaReducers } from './reducers';
+
 @NgModule({
   declarations: [
     MaterialMenuComponent,
@@ -31,6 +40,9 @@ import { HttpClientModule } from '@angular/common/http';
       autoFocusAssist: false
     }),
     IonicStorageModule.forRoot(),
+    StoreModule.forRoot(reducers, { metaReducers }),
+    EffectsModule.forRoot([DogsEffects]),
+    StoreDevtoolsModule.instrument()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -44,7 +56,8 @@ import { HttpClientModule } from '@angular/common/http';
     DataProvider,
     SteemProvider,
     ActionsSteem,
-    SteemConnectProvider
+    SteemConnectProvider,
+    AuthProvider
   ]
 })
 export class AppModule {}

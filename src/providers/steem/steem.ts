@@ -9,6 +9,8 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/publishReplay';
+import 'rxjs/add/observable/timer';
+
 import { forkJoin } from "rxjs/observable/forkJoin";
 
 // BASE ENPOINT
@@ -48,11 +50,20 @@ const youtubeid = /(?:(?:youtube.com\/watch\?v=)|(?:youtu.be\/))([A-Za-z0-9\_\-]
 const vimeoRegex = /(https?:\/\/)?(www\.)?(?:vimeo)\.com.*(?:videos|video|channels|)\/([\d]+)/i;
 const tags = /(^|\s)(#)([a-z][-\.a-z\d]+[a-z\d])/gim;
 
+const API_URL = "https://dog.ceo/api/"
+
 
 @Injectable()
 export class SteemProvider {
   
   constructor(private http: Http) {
+  }
+
+  findRandomDog() {
+    // data.message contains the string url
+    return this.http.get(`${API_URL}breeds/image/random`)
+        .map(res => res.json())
+        .map(data => data.message)
   }
 
   /**
