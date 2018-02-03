@@ -9,6 +9,7 @@
 import { Component, Input } from '@angular/core';
 import { Post } from 'models/models';
 import { App } from 'ionic-angular';
+import { Observable } from "rxjs/Observable";
 
 
 @Component({
@@ -17,7 +18,7 @@ import { App } from 'ionic-angular';
 })
 export class PostRenderComponent {
 
-  @Input('posts') private contents: Array<Post> = [];
+  @Input('posts') private contents: Observable<any>;
 
   constructor(public app: App) { }
 

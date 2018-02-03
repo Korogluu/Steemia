@@ -63,7 +63,7 @@ export const FETCH_RANDOM_DOG_ERROR = "FETCH_RANDOM_DOG_ERROR";
  */
 export class fetchFeed implements Action {
     readonly type = FETCH_FEED;
-    constructor(public payload: any) {}
+    constructor(public payload?: any) {}
 }
 
 export class fetchFeedSuccess implements Action {

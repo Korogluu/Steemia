@@ -9,7 +9,8 @@ import {
     FETCH_FEED,
     fetchFeedSuccess,
     fetchFeedError
-} from '../actions/posts'
+} from '../actions/posts';
+import { fetchFeed } from '../actions/posts'
 
 @Injectable()
 export class DogsEffects {
@@ -24,10 +25,11 @@ export class DogsEffects {
     fetchFeed$: Observable<Action> = this.actions$
         // Send the request when FETCH_RANDOM_DOG is dispatched
         .ofType(FETCH_FEED)
+        .map((action: fetchFeed) => action.payload)
         // Send the request to the API
         .switchMap((action) => {
             this.limit += 10;
-            return this._dogApiService.getFeed({tag:"jaysermendez", limit: this.limit})
+            return this._dogApiService.getFeed({tag: action.tag, limit: action.limit})
                 // Request succeeed, we dispatch fetchRandomDogSuccess action with the retrieved imgUrl
                 .map(imgUrl => new fetchFeedSuccess(imgUrl))
                 // Something went wrong with the request

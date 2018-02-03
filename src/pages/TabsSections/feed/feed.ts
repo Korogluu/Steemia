@@ -1,9 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, App } from 'ionic-angular';
 import { Post } from 'models/models';
 import { SteemProvider } from '../../../providers/steem/steem';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs/Observable";
 import * as fromPostsActions from '../../../app/actions/posts';
@@ -14,42 +12,24 @@ import { State } from '../../../app/reducers';
   selector: 'page-feed',
   templateUrl: 'feed.html'
 })
-export class FeedPage implements OnInit, OnDestroy {
+export class FeedPage implements OnInit {
 
-  private destroyed$: Subject<{}> = new Subject();
   private contents: Array<Post> = [];
   private perPage = 10;
   private result: any;
+
+  private feedPosts$: Observable<any>;
+  private isLoading$: Observable<any>;
   constructor(private steemProvider: SteemProvider,
               private appCtrl: App,
-              private _store: Store<State>) {
-
-    
-
-  }
-
-  /*
-   * Callback function called when the button is clicked
-   */
-  onFindAnotherDogClicked() {
-    // Dispatch the "findAnotherDog" action using the _store injected in the constructor
-    this._store.dispatch(new fromPostsActions.fetchFeed({test:"test"}))
-  }
+              private _store: Store<State>) {}
 
 
   public ngOnInit() {
-    this.getFeed()
-    .takeUntil( this.destroyed$ )
-    .subscribe((data: Array<Post>) => {
-      this.contents = data;
-    });
+    this.feedPosts$ = this._store.select(state => state.posts.data);
+    this.isLoading$ = this._store.select(state => state.posts.isLoading);
+    this._store.dispatch(new fromPostsActions.fetchFeed({tag:"jaysermendez", limit: this.perPage}));
   }
-
-  public ngOnDestroy() {
-    this.destroyed$.next(); /* Emit a notification on the subject. */
-    this.destroyed$.complete();
-  }
-
   /**
    * 
    * Method to get posts in the user feed
@@ -68,12 +48,12 @@ export class FeedPage implements OnInit, OnDestroy {
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
-    this.getFeed()
-    .takeUntil( this.destroyed$ )
-    .subscribe((data: Array<Post>) => {
-      this.contents = data;
-      refresher.complete();
-    });
+    // this.getFeed()
+    // .takeUntil( this.destroyed$ )
+    // .subscribe((data: Array<Post>) => {
+    //   this.contents = data;
+    //   refresher.complete();
+    // });
   }
 
   /**
@@ -83,12 +63,14 @@ export class FeedPage implements OnInit, OnDestroy {
    * @param {Event} infiniteScroll
    */
   private doInfinite(infiniteScroll): void {
-    this.perPage += 10;
-    this.getFeed()
-    .takeUntil( this.destroyed$ )
-    .subscribe((data: Array<Post>) => {
-      this.contents = data;
-      infiniteScroll.complete();
+    this.perPage += 10
+    this._store.dispatch(new fromPostsActions.fetchFeed({tag:"jaysermendez", limit: this.perPage}));
+    this.isLoading$.subscribe(loading => {
+      if (loading) {
+        // Sleep while it is loading :D
+      } else {
+        infiniteScroll.complete();
+      }
     });
   }
 

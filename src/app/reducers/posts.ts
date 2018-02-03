@@ -9,9 +9,7 @@ const OTHER_DOG_URL = "https://dog.ceo/api/img/retriever-golden/n02099601_3869.j
  */
 export interface State {
     isLoading: boolean,
-    posts: {
-        data: any
-    }
+    data: any
 }
 
 /*
@@ -20,9 +18,7 @@ export interface State {
  */
 export const initialState: State = {
     isLoading: false,
-    posts: {
-        data: "https://dog.ceo/api/img/pembroke/n02113023_3945.jpg"
-    }
+    data: null
 
 }
 
@@ -54,9 +50,7 @@ export function reducer(state: State = initialState, action: fromPostsActions.Ac
         case fromPostsActions.FETCH_FEED_SUCCESS: {
             const posts = action.payload.posts
             return {
-                posts: {
-                    data: posts
-                },
+                data: posts,
                 isLoading: false
             }
         }
