@@ -29,7 +29,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <!--skeleton-loading *ngIf="contents?.length < 1"></skeleton-loading-->
+  <skeleton-loading *ngIf="!(feedPosts$ | async)"></skeleton-loading>
       
   <post-render [posts]="feedPosts$"></post-render>
   
