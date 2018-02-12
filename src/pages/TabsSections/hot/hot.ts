@@ -5,13 +5,14 @@ import { SteemProvider } from '../../../providers/steem/steem';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import { Observable } from 'rxjs/Observable';
+import { hotTemplate } from './hot.template';
 
 @IonicPage({
   priority: 'high'
 })
 @Component({
-  selector: 'page-hot',
-  templateUrl: 'hot.html',
+  selector: 'tab-sections',
+  template: hotTemplate
 })
 export class HotPage {
   
@@ -63,7 +64,7 @@ export class HotPage {
 
     if (!this.is_first_loaded) {
       query = {
-        limit: 10,
+        limit: 25,
         tag: ''
       };  
     }
@@ -71,7 +72,7 @@ export class HotPage {
     else {
       query = {
         tag: '',
-        limit: 10,
+        limit: 25,
         start_author: this.contents[this.contents.length - 1].author,
         start_permlink: this.contents[this.contents.length - 1].permlink,
       };
@@ -122,5 +123,9 @@ export class HotPage {
    */
   private openPage(str: string): void {
     this.appCtrl.getRootNavs()[0].push(str);
+  }
+
+  public identify(index, item) {
+    return item.title;
   }
 }

@@ -6,13 +6,14 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import { Observable } from 'rxjs/Observable';
 import { SteemConnectProvider } from 'providers/steemconnect/steemconnect';
+import { feedTemplate } from './feed.template';
 
 @IonicPage({
   priority: 'high'
 })
 @Component({
-  selector: 'page-feed',
-  templateUrl: 'feed.html'
+  selector: 'tab-sections',
+  template: feedTemplate
 })
 export class FeedPage {
 
@@ -28,14 +29,14 @@ export class FeedPage {
     /**
      * Subscribe to the user object in the auth provider
      */
-    this.steemConnect.username.subscribe(user => {
-      if (user !== null) {
-        // Redeclare it as false to start the pagination from 0
-        this.is_first_loaded = false;
-        this.username = user;
-        this.dispatchFeed();
-      }
-    })
+    // this.steemConnect.username.subscribe(user => {
+    //   if (user !== null || user !== undefined || user !== '') {
+    //     // Redeclare it as false to start the pagination from 0
+    //     this.is_first_loaded = false;
+    //     this.username = user;
+    //     this.dispatchFeed();
+    //   }
+    // })
 
   }
 
@@ -77,17 +78,17 @@ export class FeedPage {
 
     let query;
 
-    if (!this.is_first_loaded) {
+    if (this.is_first_loaded == false) {
       query = {
-        limit: 10,
-        tag: this.username
+        limit: 25,
+        tag: 'jaysermendez'
       };  
     }
     
     else {
       query = {
-        tag: this.username,
-        limit: 10,
+        tag: 'jaysermendez',
+        limit: 25,
         start_author: this.contents[this.contents.length - 1].author,
         start_permlink: this.contents[this.contents.length - 1].permlink,
       };
@@ -138,5 +139,9 @@ export class FeedPage {
    */
   private openPage(str: string): void {
     this.appCtrl.getRootNavs()[0].push(str);
+  }
+
+  public identify(index, item) {
+    return item.title;
   }
 }

@@ -5,22 +5,27 @@ import { SteemProvider } from '../../../providers/steem/steem';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import { Observable } from 'rxjs/Observable';
+import { ISubscription } from "rxjs/Subscription";
+import { trendsTemplate } from './trend.template';
 
 @IonicPage({
   priority: 'high'
 })
 @Component({
-  selector: 'page-trend',
-  templateUrl: 'trend.html',
+  selector: 'tab-sections',
+  template: trendsTemplate
 })
 export class TrendPage{
 
   private destroyed$: Subject<{}> = new Subject();
   private contents: Array<Post> = [];
   private is_first_loaded: boolean = false;
+  private subscription: ISubscription;
   
   constructor(public appCtrl: App,
               private steemProvider: SteemProvider) {
+
+    
 
   }
 
@@ -31,16 +36,17 @@ export class TrendPage{
   ionViewDidLeave() {
     this.destroyed$.next(); /* Emit a notification on the subject. */
     this.destroyed$.complete();
+    this.subscription.unsubscribe();
   }
 
   /**
    * Method to dispatch feed and avoid repetition of code
    */
   private dispatchTrending() {
-    this.getTrending()
+    this.subscription = this.getTrending()
     .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
-      data.slice(1).map(post => {
+      data.map(post => {
         this.contents.push(post);
       });
     });
@@ -63,7 +69,7 @@ export class TrendPage{
 
     if (!this.is_first_loaded) {
       query = {
-        limit: 10,
+        limit: 25,
         tag: 'steem'
       };  
     }
@@ -71,7 +77,7 @@ export class TrendPage{
     else {
       query = {
         tag: 'steem',
-        limit: 10,
+        limit: 25,
         start_author: this.contents[this.contents.length - 1].author,
         start_permlink: this.contents[this.contents.length - 1].permlink,
       };
@@ -87,14 +93,16 @@ export class TrendPage{
    * @param {Event} refresher
    */
   private doRefresh(refresher): void {
+    this.subscription.unsubscribe();
     this.is_first_loaded = false;
-    this.getTrending()
+    this.subscription = this.getTrending()
     .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
       this.contents = [];
-      data.slice(1).map(post => {
+      data.map(post => {
         this.contents.push(post);
       });
+      this.is_first_loaded = true;
       refresher.complete();
     });
   }
@@ -106,10 +114,11 @@ export class TrendPage{
    * @param {Event} infiniteScroll
    */
   private doInfinite(infiniteScroll): void {
-    this.getTrending()
+    this.subscription.unsubscribe();
+    this.subscription = this.getTrending()
     .takeUntil( this.destroyed$ )
     .subscribe((data: Array<Post>) => {
-      data.map(post => {
+      data.slice(1).map(post => {
         this.contents.push(post);
       });
       infiniteScroll.complete();
@@ -122,5 +131,9 @@ export class TrendPage{
    */
   private openPage(str: string): void {
     this.appCtrl.getRootNavs()[0].push(str);
+  }
+
+  public identify(index, item) {
+    return item.title;
   }
 }

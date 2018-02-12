@@ -348,6 +348,8 @@ export class SteemProvider {
       // Parse created time
       post.created = moment.utc(post.created).local().fromNow();
 
+      post.net_votes = this.renderLikes(post.net_votes);
+
     });
     console.log(response)
     return response;
@@ -405,6 +407,16 @@ export class SteemProvider {
     for (let d in parameters)
       ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(parameters[d]));
     return ret.join('&');
+  }
+
+  /**
+   * Method to add pluralization to the likes in the post
+   * @param likes 
+   */
+  private renderLikes(likes: number) {
+    if (likes > 1 || likes == 0) return likes + ' likes';
+    else return likes + ' like';
+
   }
 
 }
