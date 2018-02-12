@@ -49,6 +49,7 @@ export class SteemConnectProvider {
         SteemConnect.setAccessToken(this.access_token);
         this.loginStatus.next(true)
         SteemConnect.me((err, res) => {
+          console.log(err, res)
           this.user = res.user
           this.username.next(res.user);
         });
