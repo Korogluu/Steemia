@@ -1,17 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-/*
-  Generated class for the SteemiaProvider provider.
+const BASE_API = 'https://steepshot.org/api/steemia/v1_1/';
+const POSTS_BASE = BASE_API + 'posts/'
+const HOT_POSTS = BASE_API + 'posts/hot?';
+const NEW_POSTS = BASE_API + 'posts/new?';
+const TOP_POSTS = BASE_API + 'posts/top?';
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
+
 @Injectable()
 export class SteemiaProvider {
 
   constructor(public http: HttpClient) {
-    console.log('Hello SteemiaProvider Provider');
+   
   }
 
 }
